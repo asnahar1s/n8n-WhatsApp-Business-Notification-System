@@ -1,0 +1,107 @@
+{
+  "name": "WhatsApp Notification Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "New Lead Inquiry",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        32
+      ],
+      "id": "4705119d-88df-4f0e-8dee-b4ee1c30f718",
+      "name": "On form submission",
+      "webhookId": "e5f5d4f9-e154-46c5-8c3f-7aab725e3fd3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.twilio.com/2010-04-01/Accounts/ACb86f742ceb22924b03793f75eb02c59e/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "From",
+              "value": "=whatsapp:+14155238886"
+            },
+            {
+              "name": "To",
+              "value": "=whatsapp:+971552943346"
+            },
+            {
+              "name": "Body",
+              "value": "=New lead from {{ $('On form submission').item.json.Name }}!"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        160,
+        32
+      ],
+      "id": "4d261ee6-7bb7-4cfa-88b1-b406884140b0",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "b1eQJfQcf2VVFh2r",
+          "name": "Twilio Basic Auth"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b5f80669-e99f-4e74-8fea-79f8de7605af",
+  "meta": {
+    "instanceId": "28b6b1e97c097bf9fbb8c25af90ddae3b947016285bbca7190fbb4a5f46d84b2"
+  },
+  "id": "aCtf1KwxhvaZes4w",
+  "tags": []
+}
